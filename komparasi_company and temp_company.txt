@@ -1,0 +1,20 @@
+companyId - CompanyID
+name - CompanyName 
+countryRegNumber 
+companyNumber
+email  - Email
+web - WWW
+phone - Phone
+invoiceEmail
+newsletter
+linkedin - Linkedln
+facebook - Facebook
+skype
+employeeCount
+countryId
+branchCategoryId
+note
+creditTime
+connectDepartment
+connectUser
+directions
