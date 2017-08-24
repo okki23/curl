@@ -37,9 +37,10 @@ function curl_download($Url){
     return $output;
 }
 
-$field = array("name","address1","postal_code","city","country","phone","email","fax","logo","number","corporation_id","c_exclude_department_id","c_corporation_id");
+$field = array("city");
 $imp = implode(",",$field);
-$curl = curl_download('https://api.recman.no/v1.php?key=170802052520k704a4ea1b924837dc639307650e27e34354317558&scope=department&type=json&fields='.$imp.'&order_by=name');
+$curl = curl_download('api.recman.no/v1.php?type=json&scope=extent_list&key=170802052520k704a4ea1b924837dc639307650e27e34354317558');
+//$curl = curl_download('https://api.recman.no/v1.php?scope=location&key=170802052520k704a4ea1b924837dc639307650e27e34354317558&fields=city&type=json');
 
 
 //echo "<pre>$curl</pre>";
