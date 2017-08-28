@@ -1,11 +1,11 @@
 <?php
 //header('Content-Type: application/json');
 include "konek.php";
- 
+
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "company",
               "operation" => "select",
-              "data" => array("page" => 5, "fields" => ["name","countryRegNumber","companyNumber","email","web","phone","invoiceEmail","newsletter","linkedin","facebook","skype","countryId","branchCategoryId","note","creditTime","connectDepartment","connectUser","directions","visitAddress","postAddress","deliveryAddress","invoiceAddress","file","attribute"]));
+              "data" => array("page" => 1, "fields" => ["name","countryRegNumber","companyNumber","email","web","phone","invoiceEmail","newsletter","linkedin","facebook","skype","countryId","branchCategoryId","note","creditTime","connectDepartment","connectUser","directions","visitAddress","postAddress","deliveryAddress","invoiceAddress","file","attribute"]));
 $data_string = json_encode($data);
 $ch = curl_init('https://api.recman.no/post/');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -22,36 +22,45 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 $result = curl_exec($ch);
 curl_close($ch);
 
-//echo "<pre>$result</pre>";
-//print_r(json_decode($result, true));
 $companylist = json_decode($result, true);
 
-//var_dump($companylist['data']);
-//exit();
+var_dump($companylist['data']);
+exit();
 foreach ($companylist['data'] as $key => $value) {
+  echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,Phone,LinkedIn,Facebook)
+  values
+  ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[phone]','$value[linkedin]','$value[facebook]');";
 
-/*mysqli_query($connect,"insert into temp_company (companyId,name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,creditTime)
+
+ mysqli_query($connect,"insert into temp_company (companyId,name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,creditTime)
      values
     ('$value[companyId]','$value[name]','$value[countryRegNumber]','$value[companyNumber]','$value[email]','$value[web]','$value[phone]','$value[invoiceEmail]','$value[newsletter]','$value[linkedin]','$value[facebook]','$value[skype]','$value[countryId]','$value[branchCategoryId]','$value[creditTime]')");
-*/
-// mysqli_query($connect,"insert into company (CompanyID,CompanyName ,Email,WWW,Phone,LinkedIn,Facebook)
-//      values
-//     ('$value[companyId]','$value[name]','$value[email]','$value[web]','$value[phone]','$value[linkedin]','$value[facebook]')");
-//
- echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,Phone,LinkedIn,Facebook)
-     values
-    ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[phone]','$value[linkedin]','$value[facebook]');";
-	
-  echo "insert into companystruct (ChildCompanyID)
-     values
-    ('$value[companyId]');";
+
+
+ // echo "<br>";
+ // echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,Phone,LinkedIn,Facebook)
+ //     values
+ //    ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[phone]','$value[linkedin]','$value[facebook]');";
+ mysqli_query($connect,"insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,Phone,LinkedIn,Facebook)
+    values
+   ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[phone]','$value[linkedin]','$value[facebook]')");
+ // echo "<br>";
+ // echo "insert into companystruct (ChildCompanyID)
+ //     values
+ //    ('$value[companyId]');";
+
+mysqli_query($connect,"insert into companystruct (ChildCompanyID) values ('$value[companyId]')");
+
 /* echo "insert into temp_company (companyId,name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,creditTime)
      values
     ('$value[companyId]','$value[name]','$value[countryRegNumber]','$value[companyNumber]','$value[email]','$value[web]','$value[phone]','$value[invoiceEmail]','$value[newsletter]','$value[linkedin]','$value[facebook]','$value[skype]','$value[countryId]','$value[branchCategoryId]','$value[creditTime]');";*/
 
 
-  /*if(isset($value['visitAddress'])){
+  if(isset($value['visitAddress'])){
     //echo $value['visitAddress']['address1'];
+    // echo "<br>";
+    // echo "insert into temp_company_visit_address (id,company_id,address1,address2,postalCode,city,country) values
+    // (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."');";
     mysqli_query($connect,"insert into temp_company_visit_address (id,company_id,address1,address2,postalCode,city,country) values
     (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."')");
 
@@ -60,73 +69,59 @@ foreach ($companylist['data'] as $key => $value) {
 
   if(isset($value['postAddress'])){
     //echo $value['postAddress']['address1'];
+  //  echo "<br>";
+  //  echo "insert into temp_company_post_address (id,company_id,address1,address2,postalCode,city,country) values
+  //   (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."');";
    mysqli_query($connect,"insert into temp_company_post_address (id,company_id,address1,address2,postalCode,city,country) values
-    (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."')");
+   (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."')");
 
   }
 
 
   if(isset($value['deliveryAddress'])){
     //echo $value['postAddress']['address1'];
-       mysqli_query($connect,"insert into temp_company_delivery_address (id,company_id,address1,address2,postalCode,city,country) values
+    // echo "<br>";
+    // echo "insert into temp_company_delivery_address (id,company_id,address1,address2,postalCode,city,country) values
+    // (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."');";
+    mysqli_query($connect,"insert into temp_company_delivery_address (id,company_id,address1,address2,postalCode,city,country) values
     (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."')");
-
-
 
   }
 
   if(isset($value['invoiceAddress'])){
     //echo $value['postAddress']['address1'];
-     mysqli_query($connect,"insert into temp_company_invoice_address (id,company_id,address1,address2,postalCode,city,country) values
+  //   echo "<br>";
+  //   echo "insert into temp_company_invoice_address (id,company_id,address1,address2,postalCode,city,country) values
+  //  (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."');";
+    mysqli_query($connect,"insert into temp_company_invoice_address (id,company_id,address1,address2,postalCode,city,country) values
     (null,'".$value['companyId']."','".$value['visitAddress']['address1']."','".$value['visitAddress']['address2']."','".$value['visitAddress']['postalCode']."','".$value['visitAddress']['city']."','".$value['visitAddress']['country']."')");
-
-
 
   }
 
 
   if(isset($value['file'])){
     //echo $value['postAddress']['address1'];
-     mysqli_query($connect,"insert into temp_company_file ('id','company_id','extension','created','base64') values
+  //   echo "insert into temp_company_file ('id','company_id','extension','created','base64') values
+  //  (null,'".$value['companyId']."','".$value['file']['extension']."','".$value['file']['created']."','".$value['file']['base64']."');";
+    mysqli_query($connect,"insert into temp_company_file ('id','company_id','extension','created','base64') values
     (null,'".$value['companyId']."','".$value['file']['extension']."','".$value['file']['created']."','".$value['file']['base64']."')");
 
   }
 
+
   if(isset($value['attribute'])){
     //echo $value['postAddress']['address1'];
+  //   echo "<br>";
+  //   echo "insert into temp_company_attribute ('id','company_id','text','boolean','rating','checkboxlds','dropdownld') values
+  //  (null,'".$value['companyId']."','".$value['attribute']['text']."','".$value['attribute']['boolean']."','".$value['attribute']['rating']."','".$value['attribute']['checkboxlds']."','".$value['attribute']['dropdownld']."');";
      mysqli_query($connect,"insert into temp_company_attribute ('id','company_id','text','boolean','rating','checkboxlds','dropdownld') values
     (null,'".$value['companyId']."','".$value['attribute']['text']."','".$value['attribute']['boolean']."','".$value['attribute']['rating']."','".$value['attribute']['checkboxlds']."','".$value['attribute']['dropdownld']."')");
 
-  }*/
+  }
+
+
 
   }
-    //foreach ($value['visitAddress'] as $rows) {
-         //var_dump($rows);
-         /*
-         echo "insert into temp_company_visit_address (id,company_id,address1,address2,postalCode,city,country)
-            values
-           (null,'$value[companyId]','$rows[address1]','$rows[address2]','$rows[postalCode]','$rows[city]','$rows[country]');";
-           */
-    //}
- 
- 
- 
-//print_r($companylist['data']);
-//foreach ($companylist['data'] as $value) {
-	//name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,note,creditTime,connectDepartment,connectUser,directions
-// echo "";
-/*  mysqli_query($connect,"insert into temp_company (companyId,name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,creditTime)
-     values
-    ('$value[companyId]','$value[name]','$value[countryRegNumber]','$value[companyNumber]','$value[email]','$value[web]','$value[phone]','$value[invoiceEmail]','$value[newsletter]','$value[linkedin]','$value[facebook]','$value[skype]','$value[countryId]','$value[branchCategoryId]','$value[creditTime]')") or die(mysqli_error($connect));
-*/
-
-//var_dump($value);
-
-/*echo "insert into temp_company (companyId,name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,creditTime)
-   values
-  ('$value[companyId]','$value[name]','$value[countryRegNumber]','$value[companyNumber]','$value[email]','$value[web]','$value[phone]','$value[invoiceEmail]','$value[newsletter]','$value[linkedin]','$value[facebook]','$value[skype]','$value[countryId]','$value[branchCategoryId]','$value[creditTime]');";*/
- //foreach($)
-//}
 
 
 
