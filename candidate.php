@@ -1,51 +1,11 @@
 <?php
-/*Field   Description     Required    Data type
-corporationId   Corporation ID  Yes     int
-firstName   First name  Yes     string
-lastName    Last name   Yes     string
-title   Title   No  string
-email   Email   No  string
-password    Password    No  string
-languageId  Language ID
+//last 5 '222248'
 
-1= English
-
-2= Swedish
-
-3= Danish
-
-4= Norwegian
-    No  int
-mobilePhone     Mobile phone number     No  string
-homePhone   Home phone number   No  string
-officePhone     Work phone number   No  string
-workEmail   Work email  No  string
-gender  Gender (male/female)    No  string
-dob     Date of birth in format
-
-dd.mm.yyyy
-    No  string
-departmentId    Department ID   No  string
-description     Description     NO  string
-notes   Notes   No  string
-connectDepartment   Connect to department(ID)   No  int(array)
-connectUser     Connected user/co-worker(ID)    No  int(array)
-connectCompany  Connected company(ID)   No  int(array)
-connectCompanyContact   Connected Company Contact(ID)   No  int(array)
-rating  Star-rating (1-5)   no  int
-facebook    Facebook    no  string
-linkedin    LinkedIN    no  string
-twitter     Twitter     no  string
-web     Homepage    no  string
-blockedCompanyIds   Blocks candidate from companies, by ID  no   string
-children    Adds children by adding the year they were bort (1998, 2001, ect)   no  int (array)
-nationality     Nationality     no  string
-internal*/
-
+include "konek.php";
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "candidate",
               "operation" => "select",
-              "data" => array("page" => 1, "fields" => ["corporationId","firstName","lastName","title","email","password","languageId","statusId","mobilePhone","homePhone","officePhone","workEmail","gender","dob","departmentId","description","notes","connectDepartment","connectUser","connectCompany","connectCompanyContact","rating","facebook","linkedin","twitter","web","blockedCompanyIds","children","nationality"]));
+              "data" => array("page" => 104, "fields" => ["corporationId","firstName","lastName","title","email","password","languageId","statusId","mobilePhone","homePhone","officePhone","workEmail","gender","dob","departmentId","description","notes","connectDepartment","connectUser","connectCompany","connectCompanyContact","rating","facebook","linkedin","twitter","web","blockedCompanyIds","children","nationality","internal","education","experience","certifications","address","skills","languages","employee","dependents","jobApplication","profilePicture","candidateId","file","candidateAttributes","tags"]));
 $data_string = json_encode($data);
 $ch = curl_init('https://api.recman.no/post/');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -62,14 +22,26 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 $result = curl_exec($ch);
 curl_close($ch);
 
-//echo "<pre>$result</pre>";
-//print_r(json_decode($result, true));
-$companylist = json_decode($result, true);
-
-var_dump($companylist['data']);
-exit();
-foreach ($companylist['data'] as $key => $value) {
  
-  
+$companylist = json_decode($result, true);
+ // var_dump($companylist);
+ // exit();
+
+foreach ($companylist['data'] as $key => $value) {
+	// echo "insert into temp_person (PersonID,FirstName,LastName,Title,Email,MobilePhoneNumber,HomePhone,Gender,BirthDate,Notes,LanguageID,Active,Defaultinterface,DefaultModule,DefaultTemplate,Classification) values ('".$value['candidateId']."','".$value['firstName']."','".$value['lastName']."','".$value['title']."','".$value['email']."','".$value['mobilePhone']."','".$value['homePhone']."','".$value['gender']."','".$value['dob']."','".str_replace("'","",$value['description'])."','".$value['languageId']."','1','internett1','publish','profil','A'); "; 
+	// // exit();
+
+  $sql = mysqli_query($connect,"insert into temp_person(PersonID,FirstName,LastName,Title,Email,MobilePhoneNumber,HomePhone,Gender,BirthDate,Notes,LanguageID,Active,Defaultinterface,DefaultModule,DefaultTemplate,Classification) values ('".$value['candidateId']."','".$value['firstName']."','".$value['lastName']."','".$value['title']."','".$value['email']."','".$value['mobilePhone']."','".$value['homePhone']."','".$value['gender']."','".$value['dob']."','".str_replace("'","",$value['description'])."','".$value['languageId']."','1','internett1','publish','profil','A') ");
+
+
 }
+
+
+if($sql){
+	echo "inserted!";
+}else{
+	echo mysqli_error($connect);
+}
+ 
+ 
 ?>

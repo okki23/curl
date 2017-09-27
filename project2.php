@@ -66,7 +66,7 @@ isSupport
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "project",
               "operation" => "select",
-              "data" => array("page" => 5, "fields" => ["companyId","projectId","departmentId","responsibleUserId","name","description","categoryId","statusId","percentCompleted","invoiceNotes","startDate","endDate","created","updated"]));
+              "data" => array("page" => 1, "fields" => ["companyId","projectId","departmentId","responsibleUserId","name","description","categoryId","statusId","percentCompleted","invoiceNotes","startDate","endDate","created","updated"]));
 $data_string = json_encode($data);
 $ch = curl_init('https://api.recman.no/post/');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");

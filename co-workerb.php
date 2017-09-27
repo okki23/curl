@@ -43,51 +43,17 @@ function curl_download($Url){
     return $output;
 }
  
-$field = array("first_name","last_name","title","mobile_phone","office_phone","email","image","facebook","linkedin","twitter","corporation_id","department_id","c_department_id","c_corporation_id","c_tag_id");
+$field = array("first_name","last_name","title","mobile_phone","office_phone","email","image","facebook","linkedin","twitter","corporation_id","department_id");
 $imp = implode(",",$field);
 $curl = curl_download('https://api.recman.no/v1.php?key=170802052520k704a4ea1b924837dc639307650e27e34354317558&scope=user&type=json&fields='.$imp);
  
 //echo "<pre>$curl</pre>";
 $data = json_decode($curl, true);
- 
-echo "<table border='1' cellpadding ='3' cellspacing='0'>
-        <tr style='text-align:center; font-weight:bold;'>
-        <td> No </td>
-        <td> User ID </td>
-        <td> First Name </td>
-        <td> Last Name </td>
-        <td> Title </td>
-        <td> Mobile Phone </td>
-        <td> Office Phone </td>
-        <td> Email </td>
-        <td> Image </td>
-        <td> Facebook </td>
-        <td> Linkedin </td>
-        <td> Twitter </td>
-        <td> Corporation ID </td>
-        <td> Department ID </td>
-        </tr>";
 // var_dump($data);
-$no = 1;
-foreach ($data as $key => $value) {
-  echo "<tr>";
-  echo "<td>".$no."</td>";
-  echo "<td>".$value['user_id']."</td>";
-  echo "<td>".$value['first_name']."</td>";
-  echo "<td>".$value['last_name']."</td>";
-  echo "<td>".$value['title']."</td>";
-  echo "<td>".$value['mobile_phone']."</td>";
-  echo "<td>".$value['office_phone']."</td>";
-  echo "<td>".$value['email']."</td>";
-  echo "<td>".$value['image']."</td>";
-  echo "<td>".$value['facebook']."</td>";
-  echo "<td>".$value['linkedin']."</td>";
-  echo "<td>".$value['twitter']."</td>";
-  echo "<td>".$value['corporation_id']."</td>";
-  echo "<td>".$value['department_id']."</td>";
-  echo "</tr>";
-  $no++;
-}
+// exit(); 
 
-echo "</table>";
+foreach($data as $key=>$value){
+    //var_dump($value);
+    echo "insert into temp_co_worker (user_id,first_name,last_name,title,mobile_phone,office_phone,email,image,facebook,linkedin,twitter,corporation_id,department_id) values ('".$value['user_id']."','".$value['first_name']."','".$value['last_name']."','".$value['title']."','".$value['mobile_phone']."','".$value['office_phone']."','".$value['email']."','".$value['image']."','".$value['facebook']."','".$value['linkedin']."','".$value['twitter']."','".$value['corporation_id']."','".$value['department_id']."');";
+}
 ?>

@@ -5,13 +5,13 @@ include "konek.php";
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "company",
               "operation" => "select",
-              "data" => array("page" => 8,"fields" => 
+              "data" => array("page" => 32,"fields" => 
 			  ["name","countryRegNumber","companyNumber","email",
 			  "web","phone","invoiceEmail","newsletter","linkedin",
 			  "facebook","skype","countryId","branchCategoryId","note",
 			  "creditTime","connectDepartment","connectUser","directions",
 			  "visitAddress","postAddress","deliveryAddress","invoiceAddress"
-			  ,"file","attribute","parentCompanyId"]));
+			  ,"file","attribute"]));
 $data_string = json_encode($data);
 $ch = curl_init('https://api.recman.no/post/');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -30,16 +30,25 @@ curl_close($ch);
 
 $companylist = json_decode($result, true);///
  
-var_dump($companylist);
+
 foreach ($companylist['data'] as $key => $value) {
   
-  // echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,ExternalID,Phone,LinkedIn,Facebook)
+  // echo "insert into temp_company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,ExternalID,Phone,LinkedIn,Facebook)
   // values
   // (null,'$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[companyId]','$value[phone]','$value[linkedin]','$value[facebook]');";
 	/* 
 	echo "insert into companystruct (ParentCompanyID,ChildCompanyID,Active) values ('0','$value[companyId]','1');";
   */
+
+$sql = mysqli_query($connect,"insert into temp_company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,ExternalID,Phone,LinkedIn,Facebook)
+     values
+    (null,'$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[companyId]','$value[phone]','$value[linkedin]','$value[facebook]')");
   }
+  if($sql){
+  echo "inserted!";
+}else{
+  echo mysqli_error($connect);
+}
 exit();
  
 foreach ($companylist['data'] as $key => $value) {

@@ -2,6 +2,18 @@
 //header('Content-Type: application/json');
 include "konek.php";
 
+function string_from_array_assoc($nameArray){
+$users = Array();
+$output = '';
+ 
+/* Add each user to the new array */
+foreach ($nameArray as $key => $value) {
+  $users[] = $key  . ' (' . $value . ')';
+}
+$output =  'The values are: '. implode(', ',$users);
+return $output;
+}
+
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "candidateAttribute",
               "operation" => "select",
@@ -26,7 +38,27 @@ curl_close($ch);
 //print_r(json_decode($result, true));
 $companylist = json_decode($result, true);
 
-var_dump($companylist);
-exit();
+// var_dump($companylist['data']);
+// exit();
+
+foreach ($companylist['data'] as $key => $value) {
+	echo "--<br>";
+	echo $value['id']."   ". $value['name']."<br>";
+	//var_dump($value);
+	if(isset($value['checkbox_list'])){
+
+		 
+			 echo string_from_array_assoc($value['checkbox_list']);
+		 
+
+	}else{
+		echo "nothing_checkbox_list<br>";
+	}
+	echo "-- <br>";
+}
+/* 
+  $a=array("item1"=>"object1", "item2"=>"object2");
+  echo http_build_query($a,'',', ');
+*/
 
 ?>
