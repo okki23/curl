@@ -44,5 +44,17 @@ $curl = curl_download('api.recman.no/v1.php?type=json&scope=extent_list&key=1708
 
 
 //echo "<pre>$curl</pre>";
-print_r(json_decode($curl, true));
+// var_dump(json_decode($curl, true));
+
+// exit();
+
+$data = json_decode($curl, true);
+// var_dump($data);
+
+foreach ($data as $key => $value) {
+    // var_dump($value);
+
+    echo "insert into temp_position_type (extend_id,name) values ('".$value['extent_id']."','".$value['name']."');";
+    
+}
 ?>

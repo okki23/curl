@@ -1,10 +1,10 @@
 <?php
 // buat nama file unique untuk di download
- $filename = 'export-department'.date('YmdHis');
- // dengan perintah di bawah ini akan memunculkan dialog download di browser anda
- header("Content-type: application/x-msdownload");
- // perintah di bawah untuk menentukan nama file yang akan di download
- header("Content-Disposition: attachment; filename=".$filename.".xls");
+ // $filename = 'export-department'.date('YmdHis');
+ // // dengan perintah di bawah ini akan memunculkan dialog download di browser anda
+ // header("Content-type: application/x-msdownload");
+ // // perintah di bawah untuk menentukan nama file yang akan di download
+ // header("Content-Disposition: attachment; filename=".$filename.".xls");
 function curl_download($Url){
      // is cURL installed yet?
     if (!function_exists('curl_init')){

@@ -44,5 +44,13 @@ $curl = curl_download('api.recman.no/v1.php?type=json&scope=branch_category_list
 
 
 //echo "<pre>$curl</pre>";
-print_r(json_decode($curl, true));
+$data = json_decode($curl, true);
+// var_dump($data);
+
+foreach ($data as $key => $value) {
+    
+
+    echo "insert into temp_branch_category_list (branch_category_id,name) values ('".$value['branch_category_id']."','".$value['name']."');";
+    
+}
 ?>

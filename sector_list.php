@@ -43,6 +43,13 @@ $curl = curl_download('api.recman.no/v1.php?type=json&scope=sector_list&key=1708
 //$curl = curl_download('https://api.recman.no/v1.php?scope=location&key=170802052520k704a4ea1b924837dc639307650e27e34354317558&fields=city&type=json');
 
 
-//echo "<pre>$curl</pre>";
-print_r(json_decode($curl, true));
+$data = json_decode($curl, true);
+// var_dump($data);
+
+foreach ($data as $key => $value) {
+    
+    echo "insert into temp_sector_list (sector_id,name) values ('".$value['sector_id']."','".$value['name']."');";
+    
+}
+
 ?>

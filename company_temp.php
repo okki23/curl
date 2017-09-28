@@ -5,7 +5,7 @@ include "konek.php";
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "company",
               "operation" => "select",
-              "data" => array("page" => 32,"fields" => 
+              "data" => array("page" => 74,"fields" => 
 			  ["name","countryRegNumber","companyNumber","email",
 			  "web","phone","invoiceEmail","newsletter","linkedin",
 			  "facebook","skype","countryId","branchCategoryId","note",
@@ -36,21 +36,23 @@ foreach ($companylist['data'] as $key => $value) {
   // echo "insert into temp_company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,ExternalID,Phone,LinkedIn,Facebook)
   // values
   // (null,'$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[companyId]','$value[phone]','$value[linkedin]','$value[facebook]');";
-	/* 
+
+ /*
 	echo "insert into companystruct (ParentCompanyID,ChildCompanyID,Active) values ('0','$value[companyId]','1');";
-  */
+ */
 
 $sql = mysqli_query($connect,"insert into temp_company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,ExternalID,Phone,LinkedIn,Facebook)
      values
     (null,'$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[companyId]','$value[phone]','$value[linkedin]','$value[facebook]')");
+
   }
-  if($sql){
-  echo "inserted!";
-}else{
-  echo mysqli_error($connect);
-}
-exit();
- 
+    if($sql){
+    echo "inserted!";
+    }else{
+      echo mysqli_error($connect);
+    }
+    exit();
+     
 foreach ($companylist['data'] as $key => $value) {
   echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,Phone,LinkedIn,Facebook)
   values
