@@ -71,7 +71,7 @@ function curl_download($Url){
  
  $field = array("name","phone","email","logo","footer_logo","about","webpage","facebook","linkedin","twitter","rm_page");
 $imp = implode(",",$field);
-$curl = curl_download(' https://api.recman.no/v1.php&scope=corporation&fields='.$imp.'&key=170802052520k704a4ea1b924837dc639307650e27e34354317558&type=json');
+$curl = curl_download(' https://api.recman.no/v1.php&scope=corporation&fields='.$imp.'&key=170802052520k704a4ea1b924837dc639307650e27e3435431755811&type=json');
  
 //echo "<pre>$curl</pre>";
 $data = json_decode($curl, true);
