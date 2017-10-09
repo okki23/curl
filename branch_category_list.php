@@ -45,8 +45,8 @@ $curl = curl_download('api.recman.no/v1.php?type=json&scope=branch_category_list
 
 //echo "<pre>$curl</pre>";
 $data = json_decode($curl, true);
-// var_dump($data);
-
+var_dump($data);
+exit();
 foreach ($data as $key => $value) {
     
 

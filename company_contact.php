@@ -5,7 +5,7 @@ include "konek.php";
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "companyContact",
               "operation" => "select",
-              "data" => array("page" => 2, "fields" => ["companyId","companyContactId","name","title","email","mobilePhone","officePhone","homePhone","notes","newsletter","active","twitter","linkedin","facebook","skype"]));
+              "data" => array("page" => 14, "fields" => ["companyId","companyContactId","name","title","email","mobilePhone","officePhone","homePhone","notes","newsletter","active","twitter","linkedin","facebook","skype"]));
 $data_string = json_encode($data);
 $ch = curl_init('https://api.recman.no/post/');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");

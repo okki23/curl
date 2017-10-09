@@ -5,7 +5,7 @@ include "konek.php";
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "company",
               "operation" => "select",
-              "data" => array("page" => 74,"fields" => 
+              "data" => array("page" => 77,"fields" => 
 			  ["name","countryRegNumber","companyNumber","email",
 			  "web","phone","invoiceEmail","newsletter","linkedin",
 			  "facebook","skype","countryId","branchCategoryId","note",

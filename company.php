@@ -2,16 +2,26 @@
 //header('Content-Type: application/json');
 include "konek.php";
 
+function CountConditional($array,$exclusion,$contains){
+  $i=0;
+  foreach($array as $key => $value){
+    eval('if($value'."$contains".'$exclusion){$i++;}');
+  }
+  return $i;
+}
+
 $data = array("key" => "170802052520k704a4ea1b924837dc639307650e27e34354317558",
               "scope" => "company",
               "operation" => "select",
-              "data" => array("page" => 8,"fields" => 
+              "data" => array("page" => 1,"fields" => 
 			  ["name","countryRegNumber","companyNumber","email",
 			  "web","phone","invoiceEmail","newsletter","linkedin",
 			  "facebook","skype","countryId","branchCategoryId","note",
 			  "creditTime","connectDepartment","connectUser","directions",
 			  "visitAddress","postAddress","deliveryAddress","invoiceAddress"
-			  ,"file","attribute","parentCompanyId"]));
+			  ,"file","attribute","parentCompanyId","type"]));
+
+// add type to array field
 $data_string = json_encode($data);
 $ch = curl_init('https://api.recman.no/post/');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -30,22 +40,103 @@ curl_close($ch);
 
 $companylist = json_decode($result, true);///
  
-var_dump($companylist);
+
+var_dump($companylist['data']);
+ 
+exit();
+/*array(19) {
+    ["companyId"]=>
+    string(5) "33624"
+    ["name"]=>
+    string(22) "Recruitment Manager AS"
+    ["countryRegNumber"]=>
+    string(9) "911621541"
+    ["companyNumber"]=>
+    string(1) "1"
+    ["email"]=>
+    string(26) "mail@recruitmentmanager.no"
+    ["web"]=>
+    string(25) "www.recruitmentmanager.no"
+    ["phone"]=>
+    string(8) "24077707"
+    ["invoiceEmail"]=>
+    string(0) ""
+    ["newsletter"]=>
+    string(1) "1"
+    ["linkedin"]=>
+    NULL
+    ["facebook"]=>
+    NULL
+    ["skype"]=>
+    NULL
+    ["countryId"]=>
+    string(3) "160"
+    ["branchCategoryId"]=>
+    string(1) "9"
+    ["creditTime"]=>
+    string(2) "14"
+    ["type"]=>
+    string(8) "supplier"
+    ["visitAddress"]=>
+    array(5) {
+      ["address1"]=>
+      string(20) "Cort Adelers gate 16"
+      ["address2"]=>
+      string(0) ""
+      ["postalCode"]=>
+      string(4) "0254"
+      ["city"]=>
+      string(4) "Oslo"
+      ["country"]=>
+      string(0) ""
+    }
+    ["postAddress"]=>
+    array(5) {
+      ["address1"]=>
+      string(20) "Cort Adelers gate 16"
+      ["address2"]=>
+      string(0) ""
+      ["postalCode"]=>
+      string(4) "0254"
+      ["city"]=>
+      string(4) "Oslo"
+      ["country"]=>
+      string(0) ""
+    }
+    ["invoiceAddress"]=>
+    array(5) {
+      ["address1"]=>
+      string(14) "Oscars gate 30"
+      ["address2"]=>
+      string(0) ""
+      ["postalCode"]=>
+      string(4) "0352"
+      ["city"]=>
+      string(4) "Oslo"
+      ["country"]=>
+      string(0) ""
+    }
+  }*/
 foreach ($companylist['data'] as $key => $value) {
-  
-  // echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,ExternalID,Phone,LinkedIn,Facebook)
-  // values
-  // (null,'$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[companyId]','$value[phone]','$value[linkedin]','$value[facebook]');";
-	/* 
-	echo "insert into companystruct (ParentCompanyID,ChildCompanyID,Active) values ('0','$value[companyId]','1');";
-  */
+
+  if($value['type'] == 'customer'){
+     echo "insert into temp_company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,Phone,LinkedIn,Facebook,Type)
+  values
+  ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[phone]','$value[linkedin]','$value[facebook]',1);";
+  echo "<br>";
   }
+ 
+}
 exit();
  
-foreach ($companylist['data'] as $key => $value) {
-  echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,Phone,LinkedIn,Facebook)
-  values
-  ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[phone]','$value[linkedin]','$value[facebook]');";
+
+// foreach ($companylist['data'] as $key => $value) {
+//   echo "insert into company (CompanyID,CompanyName,CompanyNumber,OrgNumber,Email,WWW,ClassificationID,Phone,LinkedIn,Facebook)
+//   values
+//   ('$value[companyId]','$value[name]','$value[companyNumber]','$value[countryRegNumber]','$value[email]','$value[web]','$value[branchCategoryId]','$value[phone]','$value[linkedin]','$value[facebook]');";
+// }
+// exit();
+  
 
 /*
  mysqli_query($connect,"insert into temp_company (companyId,name,countryRegNumber,companyNumber,email,web,phone,invoiceEmail,newsletter,linkedin,facebook,skype,countryId,branchCategoryId,creditTime)
@@ -137,7 +228,7 @@ foreach ($companylist['data'] as $key => $value) {
 
 
 
-  }
+  1                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
 
 

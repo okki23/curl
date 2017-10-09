@@ -29,4 +29,22 @@ $companylist = json_decode($result, true);
 var_dump($companylist);
 exit();
 
+
+foreach ($companylist['data'] as $key => $value) {
+	// echo "--<br>";
+	// echo $value['id']."  ". $value['name']."  ". $value['boolean']."  ". $value['rating']."  ". $value['text']."  ". (isset($value['checkbox_list']) ? json_encode($value['checkbox_list']) : '') . "<br>";
+
+	// echo "insert into temp_candidate_attribute (id,name,boolean,rating,text,checkbox_list) values ('".$value['id']."','". $value['name']."','". $value['boolean']."','". $value['rating']."','". $value['text']."','". (isset($value['checkbox_list']) ? json_encode($value['checkbox_list']) : '')."'); ";
+
+	$data = mysqli_query($connect,"insert into temp_company_contact_attribute (id,name,boolean,rating,text,checkbox_list) values ('".$value['id']."','". $value['name']."','". $value['boolean']."','". $value['rating']."','". $value['text']."','". (isset($value['checkbox_list']) ? json_encode($value['checkbox_list']) : '')."') ");
+	 
+}
+ 
+if($data){
+	echo "inserted!";
+}else{
+	echo mysqli_error($connect);
+}
+
+
 ?>
